@@ -12,9 +12,12 @@ package com.mrjaffesclass.apcs.mvc.template;
  */
 public class Constants {
     // Constants
-  public static final int UP = 1;
-  public static final int DOWN = -1;
+    public final static int SIZE = 8;
+    public final static int MOVE_COUNT = Constants.SIZE * Constants.SIZE - 4;
+
+    public final static int WHITE = -1;
+    public final static int BLACK = 1;
+    public final static int EMPTY = 0;
   
-  public static final int FIELD_1_INCREMENT = 1;
-  public static final int FIELD_2_INCREMENT = 1;
+    public final static int DELAY = 1500;  // Milliseconds
 }
