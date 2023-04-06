@@ -1,7 +1,7 @@
 package com.mrjaffesclass.apcs.mvc.template;
 import com.mrjaffesclass.apcs.messenger.*;
-import javax.swing.jButton;
 
+import java.awt.*;
 
 
 public class View extends javax.swing.JFrame implements MessageHandler {
@@ -23,8 +23,7 @@ public class View extends javax.swing.JFrame implements MessageHandler {
    */
   public void init() {
     // Subscribe to messages here
-    mvcMessaging.subscribe("model:variable1Changed", this);
-    mvcMessaging.subscribe("model:variable2Changed", this);
+
   }
   
   @Override
@@ -46,6 +45,9 @@ public class View extends javax.swing.JFrame implements MessageHandler {
   @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        this.setBackground(Color.GREEN);
+        this.setVisible(true);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
