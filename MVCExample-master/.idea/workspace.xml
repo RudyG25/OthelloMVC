@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="09b642b8-0893-46ee-a167-0eaf647a7976" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ant.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/messenger.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/org_netbeans_modules_java_j2seproject_copylibstask.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVCExample-master.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/.netbeans_automatic_build" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/.netbeans_update_resources" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/com/mrjaffesclass/apcs/mvc/template/Constants.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/com/mrjaffesclass/apcs/mvc/template/Controller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/com/mrjaffesclass/apcs/mvc/template/Model.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/com/mrjaffesclass/apcs/mvc/template/View.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/messenger.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/nblibraries.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.mf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/build-impl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/genfiles.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/config.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/private.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/private/profiler/configurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nbproject/project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MVCExample-master/com/mrjaffesclass/apcs/mvc/template/Constants.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MVCExample-master/com/mrjaffesclass/apcs/mvc/template/Controller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MVCExample-master/com/mrjaffesclass/apcs/mvc/template/Model.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/MVCExample-master/com/mrjaffesclass/apcs/mvc/template/View.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/mrjaffesclass/apcs/mvc/template/Constants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/mrjaffesclass/apcs/mvc/template/Controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/mrjaffesclass/apcs/mvc/template/Model.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/mrjaffesclass/apcs/mvc/template/View.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2O6y8VCr5CMZw9ZMkJJwN7Nx6rx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/student/Desktop/OthelloMVC/MVC-TicTacToe"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="09b642b8-0893-46ee-a167-0eaf647a7976" name="Changes" comment="" />
+      <created>1680895167628</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1680895167628</updated>
+    </task>
+    <servers />
+  </component>
+</project>
