@@ -1,5 +1,9 @@
 package com.mrjaffesclass.apcs.mvc.template;
 import com.mrjaffesclass.apcs.messenger.*;
+import java.awt.Color;
+import java.awt.event.*;
+import javax.swing.*;
+
 
 /**
  * 
@@ -12,10 +16,12 @@ import com.mrjaffesclass.apcs.messenger.*;
  * @author Roger Jaffe
  * @version 1.0
  */
-public class Controller implements MessageHandler {
+public class Controller implements MessageHandler, MouseListener {
 
   private final Messenger mvcMessaging;
-
+  JFrame frame = new JFrame();
+  private int width = 655;
+  private int height = 655;
   /**
    * Controller constructor The Controller is responsible for creating the View
    * and the Model that it will be controlling. The mvcMessaging object is
@@ -34,17 +40,22 @@ public class Controller implements MessageHandler {
    */
   public Controller() {
     // Create the local messaging class
+    int width = 655;
+    int height = 655;
     mvcMessaging = new Messenger();
-
-    // Create the view and set it visible
-    View view = new View(mvcMessaging);    // This creates our view
+    View view = new View(mvcMessaging, this.width, this.height);
     view.init();
-    view.setVisible(true);
-
+    frame.setSize(this.width + 15, this.height + 39);
+    frame.setTitle("Othello MVC");
+    frame.add(view);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setVisible(true);
+    frame.addMouseListener(this);
     // Create the model
     Model model = new Model(mvcMessaging);  // This creates our model
     model.init();
   }
+
 
   /**
    * Initialize the model here and subscribe
@@ -57,6 +68,7 @@ public class Controller implements MessageHandler {
     // would need to process
     // A sample subscriber call would be like...
     //mvcMessaging.subscribe("view:toggleButtonClick", this);
+    mvcMessaging.subscribe("repaint", this);
   }
 
   @Override
@@ -67,6 +79,10 @@ public class Controller implements MessageHandler {
       System.out.println("MSG: received by controller: "+messageName+" | No data sent");
     }
     // This is where the controller would handle any messages
+    if (messageName.equals("repaint")) {
+      frame.repaint();
+      System.out.println("repaint");
+    }
   }
 
   /**
@@ -78,5 +94,23 @@ public class Controller implements MessageHandler {
     Controller app = new Controller();  // Create our controller...
     app.init();                         // ...and init it too
   }
-  
+  public void mouseExited(MouseEvent clicked){
+
+  }
+  public void mouseEntered(MouseEvent clicked){
+
+  }
+  public void mouseReleased(MouseEvent clicked){}
+  public void mousePressed(MouseEvent clicked){
+    System.out.println(clicked.getX());
+    System.out.println(clicked.getY());
+  }
+  public void mouseClicked(MouseEvent clicked){
+    int x = clicked.getX();
+    int y = clicked.getY();
+    int row = (y  - 15) / ((width/8));
+    int col = (x - 15) / ((width/8));
+    System.out.println("row: " + row + " col: " + col);
+    mvcMessaging.notify("MouseClicked", row + "," + col);
+  }
 }

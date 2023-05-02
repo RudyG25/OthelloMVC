@@ -8,6 +8,7 @@ import com.mrjaffesclass.apcs.messenger.*;
  * @version 1.0
  */
 public class Model implements MessageHandler {
+  private Square[][] squares = new Square[Constants.SIZE][Constants.SIZE];
 
   // Messaging system for the MVC
   private final Messenger mvcMessaging;
@@ -15,7 +16,7 @@ public class Model implements MessageHandler {
   // Model's data variables
   private boolean whoseMove;
   private boolean gameOver;
-  private String[][] board;
+
 
   /**
    * Model constructor: Create the data representation of the program
@@ -24,32 +25,27 @@ public class Model implements MessageHandler {
    */
   public Model(Messenger messages) {
     mvcMessaging = messages;
-    this.board = new String[3][3];
+    squares = this.initBoard(squares);
   }
 
-  /**
-   * Reset the state for a new game
-   */
-  private void newGame() {
-    for(int row=0; row<this.board.length; row++) {
-      for (int col=0; col<this.board[0].length; col++) {
-        this.board[row][col] = "";
-      }
-    }
-    this.whoseMove = false;
-    this.gameOver = false;
-  }
 
   /**
    * Initialize the model here and subscribe to any required messages
    */
   public void init() {
-    this.newGame();
-    this.mvcMessaging.subscribe("playerMove", this);
-    this.mvcMessaging.subscribe("newGame", this);
-    this.mvcMessaging.subscribe("whoseMove", this);
-  }
+    mvcMessaging.subscribe("MouseClicked", this);
+    whoseMove = true;
 
+  }
+  public Player checkPlayer(boolean x) {
+    Player player;
+    if (x){
+      player = new Player(Constants.WHITE);
+    }else{
+      player = new Player(Constants.BLACK);
+    }
+    return player;
+  }
   @Override
   public void messageHandler(String messageName, Object messagePayload) {
     // Display the message to the console for debugging
@@ -58,46 +54,175 @@ public class Model implements MessageHandler {
     } else {
       System.out.println("MSG: received by model: "+messageName+" | No data sent");
     }
+    if (messageName.equals("MouseClicked") && !gameOver) {
+      System.out.println("recieved");
+        String message = messagePayload.toString();
+        int x = Integer.parseInt(message.substring(0, 1));
+        int y = Integer.parseInt(message.substring(2));
+        Position pos = new Position(x, y);
+        Player player;
+        player = this.checkPlayer(this.whoseMove);
 
-    // playerMove message handler
-    if (messageName.equals("playerMove")) {
-      // Get the position string and convert to row and col
-      String position = (String) messagePayload;
-      int row = Integer.parseInt(position.substring(0, 1));
-      int col = Integer.parseInt(position.substring(1, 2));
-      // If square is blank...
-      if (this.board[row][col].equals("")) {
-        // ... then set X or O depending on whose move it is
-        if (this.whoseMove) {
-          this.board[row][col] = "X";
-        } else {
-          this.board[row][col] = "O";
+        if (isLegalMove(player, pos)) {
+          makeMove(player, pos);
+          mvcMessaging.notify("boardChange", squares);
+          whoseMove = !this.whoseMove;
+          System.out.println("legal");
         }
-        this.whoseMove = !this.whoseMove;
-        this.mvcMessaging.notify("whoseMove", this.whoseMove);
-        // Send the boardChange message along with the new board
-        if (!this.gameOver) {
-          this.mvcMessaging.notify("boardChange", this.board);
+        // write an algorithm that will fill make move every position with black, then white, then black, then white, etc.  until the board is full or there are no more moves available for either player'
+//        for (int i = 0; i < squares.length; i++) {
+//          for (int j = 0; j < squares.length; j++) {
+//            if (squares[i][j].getStatus() == Constants.EMPTY) {
+//              Position pos2 = new Position(i, j);
+//              Player player2;
+//              player2 = this.checkPlayer(this.whoseMove);
+//              makeMove(player2, pos2);
+//              mvcMessaging.notify("boardChange", squares);
+//              whoseMove = !this.whoseMove;
+//
+//            }
+//          }
+//        }
+
+
+      if (noMovesAvailable(player)) {
+        whoseMove = !this.whoseMove;
+        player = this.checkPlayer(this.whoseMove);
+        if (noMovesAvailable(player)) {
+          String[] finalMessage = new String[3];
+
+          gameOver = true;
+          System.out.println(countSquares(Constants.BLACK));
+          System.out.println(countSquares(Constants.WHITE));
+          if (countSquares(Constants.BLACK) > countSquares(Constants.WHITE)) {
+            finalMessage[0] = "Black";
+            finalMessage[1] = Integer.toString(countSquares(Constants.BLACK));
+            finalMessage[2] = Integer.toString(countSquares(Constants.WHITE));
+            mvcMessaging.notify("gameOver", finalMessage);
+          }
+          else if (countSquares(Constants.BLACK) < countSquares(Constants.WHITE)) {
+
+            finalMessage[0] = "White";
+            finalMessage[1] = Integer.toString(countSquares(Constants.WHITE));
+            finalMessage[2] = Integer.toString(countSquares(Constants.BLACK));
+            mvcMessaging.notify("gameOver", finalMessage);
+          }
+          else {
+            finalMessage[0] = "Tie";
+            mvcMessaging.notify("gameOver", finalMessage);
+          }
         }
-        this.gameOver = (isFull() || !isWinner().equals(""));
-        if (this.gameOver) {
-          this.mvcMessaging.notify("gameOver", isWinner());
-        }
+        System.out.println("no moves");
       }
 
-      // newGame message handler
-    } else if (messageName.equals("newGame")) {
-      // Reset the app state
-      this.newGame();
-      // Send the boardChange message along with the new board
-      this.mvcMessaging.notify("boardChange", this.board);
+    }
+
+  }
+  /**
+   * Initialize a new player board with empty spaces except
+   * the four middle spaces.  These are initialized
+   * W B
+   * B W
+   *
+   * @return     New board
+   */
+  private Square[][] initBoard(Square[][] squares)
+  {
+    for (int row = 0; row < Constants.SIZE; row++) {
+      for (int col = 0; col < Constants.SIZE; col++) {
+        squares[row][col] = new Square(Constants.EMPTY);
+      }
+    }
+    squares[3][3].setStatus(Constants.WHITE);
+    squares[4][4].setStatus(Constants.WHITE);
+    squares[3][4].setStatus(Constants.BLACK);
+    squares[4][3].setStatus(Constants.BLACK);
+    return squares;
+  }
+
+  public boolean isLegalMove(Player player, Position positionToCheck) {
+    // If the space isn't empty, it's not a legal move
+    if (getSquare(positionToCheck).getStatus() != Constants.EMPTY)
+      return false;
+    // Check all directions to see if the move is legal
+    for (String direction : Directions.getDirections()) {
+      Position directionVector = Directions.getVector(direction);
+      if (step(player, positionToCheck, directionVector, 0)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public Square getSquare(Position position) {
+    return this.squares[position.getRow()][position.getCol()];
+  }
+
+  protected boolean step(Player player, Position position, Position direction, int count) {
+    Position newPosition = position.translate(direction);
+
+    while (!newPosition.isOffBoard()) {
+
+      if (this.getSquare(newPosition).getStatus() == Constants.EMPTY) {
+        return false;
+      } else if (!player.isThisPlayer(this.getSquare(newPosition).getStatus()) && this.getSquare(newPosition).getStatus() != Constants.EMPTY) {
+        // If space has opposing player then move to next space in same direction
+        return step(player, newPosition, direction, count + 1);
+      } else if (player.isThisPlayer(this.getSquare(newPosition).getStatus())) {
+        return count > 0;
+      }
+
+      newPosition = position.translate(direction);
+    }
+    return false;
+  }
+
+  public void makeMove(Player playerToMove, Position positionToMove) {
+    for (String direction : Directions.getDirections()) {
+      Position directionVector = Directions.getVector(direction);
+      if (makeMoveStep(playerToMove, positionToMove, directionVector, 0)) {
+        this.setSquare(playerToMove, positionToMove);
+      }
+    }
+  }
+  public int countSquares(int toMatch) {
+    int count = 0;
+    for (Square[] row : this.squares) {
+      for (Square square : row) {
+        if (square.getStatus() == toMatch) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+  protected void setSquare(Player player, Position position) {
+    this.squares[position.getRow()][position.getCol()].setStatus(player.getColor());
+  }
+
+  private boolean makeMoveStep(Player player, Position position, Position direction, int count) {
+    Position newPosition = position.translate(direction);
+    int color = player.getColor();
+    if (newPosition.isOffBoard()) {
+      return false;
+    } else if (this.getSquare(newPosition).getStatus() == -color) {
+      boolean valid = makeMoveStep(player, newPosition, direction, count+1);
+      if (valid) {
+        this.setSquare(player, newPosition);
+      }
+      return valid;
+    } else if (this.getSquare(newPosition).getStatus() == color) {
+      return count > 0;
+    } else {
+      return false;
     }
   }
 
-  public boolean isFull() {
-    for (String[] strings : this.board) {
-      for (String string : strings) {
-        if (string.equals("")) {
+  public boolean noMovesAvailable(Player player) {
+    for (int row = 0; row < Constants.SIZE; row++) {
+      for (int col = 0; col < Constants.SIZE; col++) {
+        Position pos = new Position(row, col);
+        if (isLegalMove(player, pos)) {
           return false;
         }
       }
@@ -105,27 +230,8 @@ public class Model implements MessageHandler {
     return true;
   }
 
-  public String isWinner() {
-    // Check for a winner using two for loops
-    for (String[] strings : this.board) {
-      for (int col = 0; col < this.board[0].length; col++) {
-        // Check for a winner in the row
-        if (strings[0].equals(strings[1]) && strings[1].equals(strings[2]) && !strings[0].equals("")) {
-          return strings[0];
-        }
-        // Check for a winner in the column
-        if (this.board[0][col].equals(this.board[1][col]) && this.board[1][col].equals(this.board[2][col]) && !this.board[0][col].equals("")) {
-          return board[0][col];
-        }
-      }
-    }
-    // Check for winner in a diagonals
-    if (board[0][0].equals(this.board[1][1]) && this.board[1][1].equals(this.board[2][2]) && !this.board[0][0].equals("")) {
-      return board[0][0];
-    }
-    if(this.board[0][2].equals(this.board[1][1]) && this.board[1][1].equals(this.board[2][0]) && !this.board[0][2].equals("")) {
-      return board[0][2];
-    }
-    return "";
+
+
+
+
   }
-}
