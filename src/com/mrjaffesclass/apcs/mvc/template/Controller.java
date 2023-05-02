@@ -40,8 +40,8 @@ public class Controller implements MessageHandler, MouseListener {
    */
   public Controller() {
     // Create the local messaging class
-    int width = 655;
-    int height = 655;
+    int width = width;
+    int height = height;
     mvcMessaging = new Messenger();
     View view = new View(mvcMessaging, this.width, this.height);
     view.init();
